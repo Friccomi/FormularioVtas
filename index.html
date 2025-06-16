@@ -26,15 +26,6 @@
       background-attachment: fixed; /* Para que no se mueva al hacer scroll */      
     }
 
-//  #formWrapper {
-//    background: rgba(50, 50, 50, 0.5); /* gris translúcido */
-//    max-width: 420px;
-//    margin: 1em auto;
-//    padding: 1em 0.2em;
-//    border-radius: 8px;
-//    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-//    display: none; 
-//  }  
 
   #formWrapper {
     background: rgba(50, 50, 50, 0.5);
@@ -51,12 +42,7 @@
       width: 100%;
       max-width: 400px;
       margin: auto;
-    //  background: white;
-      //padding: 0.8em;
-     // border-radius: 8px;
-     // box-shadow: 0 0 8px rgba(0,0,0,0.05);
-    }
-
+  }
   label {
       font-weight: bold;
       display: block;
@@ -1582,7 +1568,7 @@
       }
   }
 
-  const URL_BASE = "https://script.google.com/macros/s/AKfycbwi7GhA3LpZ_kbIXIIwCXx1u1nVJoMqSYRDYsTBzi9p4VuX5GaenCSTPHPK0FBLeSgH/exec";  
+  const URL_BASE = "https://script.google.com/macros/s/AKfycbyVFNbJpB0vcwtWFJnKNSjYXBdH6Is9akhMYfz5VMYWAGgllhdLMmjohkjawbRfv8ScBg/exec";  
     
   document.getElementById('btnLogin').addEventListener('click', function () {
     const usuario = document.getElementById('usuarioInput').value.trim().toUpperCase();
@@ -1606,7 +1592,7 @@
             document.getElementById('formWrapper').style.display = 'block';
   
             // Paso 2: cargar listas
-            fetch(URL_BASE)
+            fetch(`${URL_BASE}?accion=listas`)
               .then(r => r.json())
               .then(data => inicializarFormulario(data, vendedor, area, user))
               .catch(err => alert("❌ Error al cargar listas: " + err.message));
