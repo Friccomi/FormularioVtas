@@ -806,8 +806,19 @@
 
 
       data.imagenes = window.imagenesSeleccionadas || [];
-
-      enviarFormulario(data, form);
+       
+      const data1 = {
+        vendedor: "PRUEBA",
+        cliente: "TEST CLIENTE",
+        productos: [
+          { producto: "GASOIL", litros: 1000, precio: 500, subTotal: 500000 }
+        ],
+        formasPago: [
+          { forma: "Transferencia", importe: 300000 },
+          { forma: "Efectivo", importe: 200000 }
+        ]
+};
+      enviarFormulario(data1, form);
 
    } catch (err) {
       console.error("❌ Error en envío:", err);
