@@ -546,6 +546,9 @@
     <button type="submit" id="btnSubmit">Enviar</button>
   </form>
   <script>   
+
+    const URL_BASE = "https://script.google.com/macros/s/AKfycbyB-Oevj-s7JOGRc_frjw9m6J3IvR8t7lSb9kQhU2oknUqnHDKdxMdTzCslAnMk-uwTaA/exec";  
+
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
      try{ 
@@ -817,7 +820,47 @@
     function enviarFormulario(data, form) {
       document.getElementById('btnSubmit').textContent = "Enviando...";
       document.getElementById('btnSubmit').disabled = true;
-      google.script.run
+
+      fetch(URL_BASE, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            alert("✅ Formulario enviado correctamente.");
+            form.reset();
+            document.getElementById('obsCounter').textContent = '0 / 300';
+
+            document.getElementById('clienteActualBox').style.display = 'flex';
+            document.getElementById('nuevoClienteBox').style.display = 'none';
+            document.getElementById('entregaNuevaBox').style.display = 'none';
+            document.getElementById('entregaActualBox').style.display = 'block';
+            document.getElementById('btnAddClient').innerHTML = '➕';
+            document.getElementById('placeSelect').selectedIndex = 0;
+            document.querySelector('#tablaFormasPago tbody').innerHTML = '';
+            document.getElementById('choferBox').style.display = 'none';
+
+            limpiarFormulario();
+
+          } else {
+            alert("❌ Error al enviar: " + (res.error || 'Error desconocido.'));
+          }
+        })
+        .catch(err => {
+          alert("❌ Error de red: " + err.message);
+        })
+        .finally(() => {
+          document.getElementById('btnSubmit').textContent = "Enviar";
+          document.getElementById('btnSubmit').disabled = false;
+        });
+
+
+
+     /* google.script.run
         .withSuccessHandler(() => {
           alert("✅ Formulario enviado correctamente.");
           form.reset();
@@ -848,7 +891,7 @@
           document.getElementById('btnSubmit').textContent = "Enviar";
           document.getElementById('btnSubmit').disabled = false;
         })
-        .procesarFormulario(data);    
+        .procesarFormulario(data);     */
     };
 
     function limpiarFormulario() {
@@ -1568,8 +1611,7 @@
       }
   }
 
-  const URL_BASE = "https://script.google.com/macros/s/AKfycbyVFNbJpB0vcwtWFJnKNSjYXBdH6Is9akhMYfz5VMYWAGgllhdLMmjohkjawbRfv8ScBg/exec";  
-    
+   
   document.getElementById('btnLogin').addEventListener('click', function () {
     const usuario = document.getElementById('usuarioInput').value.trim().toUpperCase();
     const clave = document.getElementById('claveInput').value.trim();
@@ -1590,7 +1632,7 @@
             // Ocultar login, mostrar formulario
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('formWrapper').style.display = 'block';
-  
+            document.getElementById('VtasForm').style.display = 'block';
             // Paso 2: cargar listas
             fetch(`${URL_BASE}?accion=listas`)
               .then(r => r.json())
