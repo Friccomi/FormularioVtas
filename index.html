@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Formulario Pedido</title>
+  <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 0.5em;
+      margin: 0;
+      color:white;
+      background-color: #f9f9f9;
+      background-image: url('https://sistemawico.s3.amazonaws.com/Fondo@3x-8.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed; /* Para que no se mueva al hacer scroll */      
+    }
+
+//  #formWrapper {
+//    background: rgba(50, 50, 50, 0.5); /* gris translúcido */
+//    max-width: 420px;
+//    margin: 1em auto;
+//    padding: 1em 0.2em;
+//    border-radius: 8px;
+//    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+//    display: none; 
+//  }  
+
+  #formWrapper {
+    background: rgba(50, 50, 50, 0.5);
+    width: 100%;
+    max-width: 420px;
+    margin: 1em auto;
+    padding: 1em 0.2em;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    box-sizing: border-box;
+  }
+  form#VtasForm {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    //  background: white;
+      //padding: 0.8em;
+     // border-radius: 8px;
+     // box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+
+  label {
+      font-weight: bold;
+      display: block;
+      color:white;
+      margin-bottom: 1px;
+    }
+
+  select:not(.tabla-producto-input), 
+    input[type="text"]:not(.tabla-producto-input), 
+    input[type="number"]:not(.tabla-producto-input) {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 4px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    /*  width: 100%;  */
+    }
+    /*  Chrome, Edge, Safari  */
+  .tabla-producto-input::-webkit-inner-spin-button,
+  .tabla-producto-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;          /* quita el espacio que dejan los spinners */
+    }
+
+    /*  Firefox  */
+  .tabla-producto-input[type="number"] {
+      -moz-appearance: textfield;   /* oculta los spinners */
+    }
+
+  input.tabla-producto-input,
+    select.tabla-producto-input {
+      padding: 4px;
+      font-size: 12px;
+      margin: 2px 0; /* Esto agrega espacio arriba y abajo del campo */
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+ .form-section {
+       width: 98%;
+    }
+
+   /* .form-section select,
+    .form-section input {
+        width: 100%;
+      }*/
+
+  .inline-group {
+      display: flex;
+      align-items: center;
+      gap: 0.1em;
+    }
+
+  .inline-group > div {
+      flex: 1;
+    }
+
+    /* Tamaño específico para CUIT */
+  #cuitCliente, #nuevoCUIT {
+      width: 120px  !important;
+      height: 28px  !important;
+    }
+
+  label[for="cuitCliente"],label[for="nuevoCUIT"]
+    {
+      width: 50px;
+      display: inline-block; /* Para que respete el ancho */
+    }
+  
+  .boton-agregar {
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    border: none;
+    background-color: #a0a0a0;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+.boton-agregar:hover {
+    background-color: #888888;
+  }
+
+
+    /* Botón enviar */
+  button[type="submit"] {
+      background-color: #a0a0a0;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 180px;
+      border-radius: 4px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #888888;
+    }
+
+    /* Botones secundarios */
+    button {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    /* 🔽 Estilo responsive para móviles */
+    @media (max-width: 600px) {
+      #formWrapper {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 1em;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .inline-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .inline-group > div {
+        width: 100% !important;
+      }
+
+      #VtasForm {
+        padding: 0.5em;
+      }
+
+      button[type="submit"] {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 0.5em;
+      }
+
+      select, input[type="text"], input[type="number"] {
+        width: 100% !important;
+      }
+    }
+      #loginBox {
+      max-width: 260px;
+      margin: 3em auto;
+      padding: 1.5em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: rgba(50, 50, 50, 0.5);
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #loginBox label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    #loginBox input {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    #btnLogin {
+      margin-top: 1.5em;
+      padding: 8px 16px;
+      background-color: #a0a0a0;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #btnLogin:hover {
+      background-color: #888888;
+    }
+
+    .boton-chico {
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+   .cliente-box {
+   /* min-height: 130px;
+    border: 1px dashed red;*/
+   }
+
+  </style>
+</head>
+<body>
+  <div style="text-align: center; margin-bottom: 1.5em;">
+    <h1 style="font-size: 1.6em; margin: 0;">WICO: Nota Venta</h1>
+  </div>
+  <div id="loginLogoContainer" style="display: flex; justify-content: flex-end; margin-bottom: 1em;">
+  </div>
+  <div id="loginBox">
+      <h3>Acceso al sistema</h3>
+      <label for="usuarioInput">Usuario:</label>
+      <input type="text" id="usuarioInput" placeholder="Ingrese su usuario" required  style="text-transform: uppercase;">
+
+      <label for="claveInput">Contraseña:</label>
+      <input type="password" id="claveInput" placeholder="Ingrese su clave" required>
+
+      <button id="btnLogin" type="button">Ingresar</button>
+  </div>
+  <div id="formWrapper">
+  <form id="VtasForm" style="display: none;margin-bottom: 0em;">
+    <!-- Vendedor -->
+    <div class="form-section" >
+      <label for="vendedorSelect">Vendedor:</label>
+      <select id="vendedorSelect" name="vendedor" required>
+        <option value="" disabled selected>Seleccione un vendedor</option>
+      </select>
+      <p>
+         <span id="area"  style="display: none" ></span>
+         <span id="user"  style="display: none" ></span>
+      </p>    <!-- CONTENEDOR UNIFICADO (misma posición para ambos) -->
+    <div id="clienteContainer" style="margin-bottom: 0.3em;">
+      
+      <!-- CLIENTE EXISTENTE -->
+      <div id="clienteActualBox" class="cliente-box" style="display: flex; flex-direction: column; gap: 0.1em;">
+        <div class="form-section">
+          <label for="clientSelect">Cliente:</label>
+          <div style="display: flex; align-items: center; gap: 0.3em;">
+            <select id="clientSelect" name="cliente" style="flex: 1;">
+              <option value="" disabled selected>Seleccione un cliente</option>
+            </select>
+            <button type="button" id="btnAddClient" title="Agregar Cliente"
+              style="
+                height: 28px;
+                width: 28px;
+                padding: 0;
+                font-size: 18px;
+                color: red;
+                font-weight: bold;
+                border: none;
+                background: none;
+                cursor: pointer;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+              ➕
+            </button>
+          </div>
+        </div>
+        <div class="form-section" style="margin-bottom: 0.5em;">
+            <label for="cuitCliente" class="label-ancho">CUIT:</label>
+            <input type="text" id="cuitCliente" name="cuitCliente" maxlength="11" class="input-cuit" title="Debe tener exactamente 11 dígitos">
+        </div>      
+      </div>
+
+      <!-- CLIENTE NUEVO -->
+      <div id="nuevoClienteBox" class="cliente-box" style="display: none; flex-direction: column; gap: 0.5em;">
+        <div class="form-section">
+          <label for="nuevoCliente">Cliente:</label>
+          <div style="display: flex; align-items: center; gap: 0.3em;">
+            <input type="text" id="nuevoCliente" placeholder="Nombre del cliente" style="flex: 1;">
+            <button type="button" id="btnCancelClient" title="Cancelar"
+              style="
+                height: 28px;
+                width: 28px;
+                padding: 0;
+                font-size: 18px;
+                color: green;
+                font-weight: bold;
+                border: none;
+                background: none;
+                cursor: pointer;
+                line-height: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+              ➖
+            </button>
+          </div>
+        </div>
+        <div class="form-section" style="margin-bottom: 0.5em;">
+          <label for="nuevoCUIT" class="label-ancho">CUIT nuevo:</label>
+          <input type="text" id="nuevoCUIT" name="nuevoCUIT" maxlength="11" class="input-cuit" title="Debe tener exactamente 11 dígitos">
+        </div>
+      </div>
+    </div>
+
+
+  <!-- Producto y detalles de venta -->
+      <div class="form-section" style="margin-top: 0em;">
+        <!-- Productos y detalles -->
+
+        <label style="font-weight: bold;">Productos:</label>
+        <table id="tablaProductos" style="width: 100%; border-collapse: collapse; margin-bottom: 0.5em;">
+          <thead>
+            <tr style="background-color: #eee;">
+              <th style="text-align: left; padding: 4px; color:black;">Producto</th>
+              <th style="text-align: right; padding: 4px; color:black;">Litros</th>
+              <th style="text-align: right; padding: 4px; color:black;">Precio</th>
+              <th style="padding: 4px;"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+       <div style="text-align: center; margin-bottom: 1em;">
+         <button type="button" onclick="agregarProducto()" class="boton-agregar">➕ Agregar producto</button>
+        </div>  
+      </div>
+
+
+      <div style="display: flex; align-items: center; gap: 0; margin-bottom: 0.3em;">
+        <label for="formaFlete" style="width: 100px;">Calculo Flete:</label>
+        <select id="formaFlete" style="width: 150px; !important;">
+          <option value="" disabled selected>Forma Flete</option>
+        </select>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0; margin-bottom: 0.3em;">
+        <label for="precioFlete" style="width: 50px;">Flete:</label>
+        <input type="text" id="precioFlete" name="flete" min="0" step="0.01" style="width: 150px !important;text-align: right;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0;  margin-bottom: 1em;">
+        <label for="totalCalculado" style="width: 50px;">Total:</label>
+        <input type="text" id="totalCalculado" name="total" readonly
+              style="width: 150px !important; background-color: #f0f0f0;text-align: right; font-weight: bold;">
+      </div>
+      <!-- Sección de formas de pago -->
+      <div class="form-section" style="max-width: 600px;  margin-bottom: 1em;">
+        <label style="font-weight: bold;">Formas de Pago:</label>
+        <table id="tablaFormasPago" style="width: 100%; border-collapse: collapse; margin-bottom: 0.5em;">
+          <thead>
+            <tr style="background-color: #eee;">
+              <th style="text-align: left; padding: px; color:black;">Forma</th>
+              <th style="text-align: right; padding: 4px;color:black;">Importe</th>
+              <th style="padding: 4px;"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button type="button" onclick="agregarFormaPago()" class="boton-agregar">➕ Agregar forma de pago</button>
+
+        <div style="margin-top: 0.5em;">
+          <label for="importeAbonado" style="font-weight: bold;">Total Abonado:</label>
+          <input type="text" id="importeAbonado" name="importe_abonado" readonly
+                style="width: 100%; background-color: #f0f0f0; text-align: right;">
+        </div>
+        <div style="margin-top: 0.3em;">
+          <label for="importePendiente" style="font-weight: bold;">Falta asignar:</label>
+          <input type="text" id="importePendiente" readonly
+                style="width: 100%; background-color: #fff0f0; text-align: right; color: red; font-weight: bold;">
+        </div>
+      </div>
+      
+    <div class="form-section" style="max-width: 600px;">
+      <!-- Lugar EXISTENTE -->
+      <!-- Selección de lugar de entrega -->
+      <div id="placeSelectBox" style="margin-bottom: 0.5em;">
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <label for="placeSelect" style="width: 80px; margin: 0;">Entrega en:</label>
+        <select id="placeSelect" name="lugarExistente" required style="width: 220px;">
+          <option value="" disabled selected>Seleccione lugar de entrega</option>
+          <option value="Retira en Planta">Retira en Planta</option> <!-- agregado -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Detalles del lugar seleccionado -->
+    <div id="entregaActualBox" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="direccionEntrega" style="width: 80px; margin: 0;">Dirección:</label>
+        <input type="text" id="direccionEntrega" readonly style="width: 220px;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="localidadEntrega" style="width: 80px; margin: 0;">Localidad:</label>
+        <input type="text" id="localidadEntrega" readonly style="width: 150px;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="provinciaEntrega" style="width: 80px; margin: 0;">Provincia:</label>
+        <input type="text" id="provinciaEntrega" readonly style="width: 150px;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.5em;">
+        <label for="horarioEntrega" style="width: 80px; margin: 0;">Horario:</label>
+        <input type="text" id="horarioEntrega" readonly style="width: 130px;">
+      </div>
+    </div>
+
+
+    <!-- Lugar NUEVO -->
+    <div id="entregaNuevaBox" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="nuevaDireccion" style="width: 80px; margin: 0;">Dirección:</label>
+        <input type="text" id="nuevaDireccion" style="width: 220px;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="nuevaLocalidad" style="width: 80px; margin: 0;">Localidad:</label>
+        <input type="text" id="nuevaLocalidad" style="width: 150px;">
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="nuevaProvincia" style="width: 80px; margin: 0;">Provincia:</label>
+        <select id="nuevaProvincia" style="width: 150px;">
+          <option value="" disabled selected>Seleccione una provincia</option>
+        </select>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.5em;">
+        <label for="nuevoHorario" style="width: 80px; margin: 0;">Horario:</label>
+        <input type="text" id="nuevoHorario" style="width: 130px;">
+      </div>
+    </div>
+
+  <!-- Datos del Chofer (solo si retira en planta) -->
+    <div id="choferBox" style="display: none; margin-top: 1em;">
+      <label style="font-weight: bold; display: block; margin-bottom: 0.3em;">Datos del Flete:</label>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.4em;">
+        <label for="razonSocial" style="width: 80px;">Razón Social:</label>
+        <input type="text" id="razonSocial" name="razonSocial" style="width: 150px;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.4em;">
+        <label for="patenteTractor" style="width: 80px;">Patente Tractor:</label>
+        <input type="text" id="patenteTractor" name="patenteTractor" style="width: 150px;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.4em;">
+        <label for="patenteSemi" style="width: 80px;">Patente Semi:</label>
+        <input type="text" id="patenteSemi" name="patenteSemi" style="width: 150px;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.4em;">
+        <label for="dniChofer" style="width: 80px;">DNI:</label>
+        <input type="text" id="dniChofer" name="dniChofer"  maxlength="8" title="Debe tener exactamente 8 dígitos">
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.5em;">
+        <label for="nombreChofer" style="width: 80px;">Nombre:</label>
+        <input type="text" id="nombreChofer" name="nombreChofer" style="width: 250px;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="contactoEntrega" style="width: 80px; margin: 0;">Contacto:</label>
+        <input type="text" id="contactoEntrega" style="width: 220px;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 0.3em;">
+        <label for="telefonoContacto" style="width: 80px; margin: 0;">Teléfono:</label>
+        <input type="number" id="telefonoContacto" style="width: 150px; step = 1;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.4em;">
+        <label for="capacidadTotSemi" style="width: 110px;">Capacidad Total:</label>
+        <input type="text" id="capacidadTotSemi" name="capacidadTotSemi" style="width: 180px; text-align: right;" >
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 0.5em;">
+        <label for="tipoCisterna" style="width: 110px;">Tipo cisterna:</label>
+        <select id="tipoCisterna" name="tipoCisterna" style="width: 180px;">
+          <option value="" disabled selected>Seleccione</option>
+          <option value="CISTERNADO">CISTERNADO</option>
+          <option value="MONOCISTERNADO">MONOCISTERNADO</option>
+        </select>
+      </div>
+      <div id="tablaCisternadoBox" style="display: none; margin-bottom: 1em;">
+        <label style="font-weight: bold;">Compartimentos:</label>
+        <table id="tablaCisternado" style="width: 100%; border-collapse: collapse; margin-top: 0.3em;">
+          <thead>
+            <tr style="background-color: #eee;">
+              <th style="text-align: center;">Capacidad (litros)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button type="button" onclick="agregarCompartimento()">➕ Agregar compartimento</button>
+      </div>
+    </div>
+    <div class="form-section" style="margin-top: 1em; max-width: 250px;">
+      <label for="observaciones">Observaciones:</label>
+      <textarea id="observaciones" name="observaciones" rows="2" maxlength="300"
+        style="width: 250px; resize: vertical; border: 1px solid #ccc; border-radius: 4px;
+              font-family: Arial, sans-serif; font-size: 14px; padding: 6px;">
+      </textarea>
+    <div id="obsCounter" style="text-align: right; font-size: 12px; color: #666;">0 / 300</div>
+    </div>
+      <!-- Campo de imagen -->
+      <div class="form-section" style="margin-top: 1em;">
+        <label for="fotoAdjunta">Subir imagen (opcional):</label>
+        <input type="file" id="fotoAdjunta" name="fotoAdjunta" accept="image/*" multiple>
+    </div>
+
+    <button type="submit" id="btnSubmit">Enviar</button>
+  </form>
+  <script>
+
+    document.getElementById('VtasForm').addEventListener('submit', function (e) {
+     e.preventDefault();
+     try{ 
+      const form = e.target;
+      const data = {};
+      const areaValue = area.textContent;
+      data.area=areaValue;
+      const userValue = user.textContent;
+      data.user=userValue;
+
+      data.vendedor = document.getElementById('vendedorSelect').value;
+      const lugarSeleccionado = document.getElementById('placeSelect').value;
+
+
+      if (document.getElementById('nuevoClienteBox').style.display === 'flex') {
+        toggleValidacionCampo('nuevoCUIT', true, '\\d{11}');
+        toggleValidacionCampo('cuitCliente', false);
+      } else {
+        toggleValidacionCampo('nuevoCUIT', false);
+        toggleValidacionCampo('cuitCliente', true, '\\d{11}');
+      }
+
+
+      const entregaNuevaBox = document.getElementById('entregaNuevaBox');
+      const usandoNuevoLugar = (entregaNuevaBox.style.display !== 'none');
+
+      const entregaActualBox = document.getElementById('entregaActualBox');
+      const usandoLugarOrig = entregaActualBox.style.display === 'block';
+
+      const retiraEnPlanta = document.getElementById('placeSelect').value === '__retira_en_planta__';
+      const razonSocial = document.getElementById('razonSocial').value.trim();    
+      const patenteSemi = document.getElementById('patenteSemi').value.trim(); 
+      
+      if (retiraEnPlanta) {
+          const fleteVal = document.getElementById('precioFlete').value.trim();
+          const formaFleteVal = document.getElementById('formaFlete').value.trim();
+          if (fleteVal || formaFleteVal) {
+                document.getElementById('precioFlete').value = '';
+                document.getElementById('formaFlete').value = '';
+                actualizarTotalProductos();
+                recalcularTotalAbonado();
+                alert("⚠️ Si retira en planta, no debe ingresar flete ni forma de cálculo del flete.");
+                return;
+              } 
+          razonSocial = document.getElementById('razonSocial').value.trim();    
+          patenteSemi = document.getElementById('patenteSemi').value.trim();
+          patenteTractor = document.getElementById('patenteTractor').value.trim();
+          dniChofer = document.getElementById('dniChofer').value.trim();
+          nombreChofer = document.getElementById('nombreChofer').value.trim();
+          const contactoEmp =document.getElementById('contactoEntrega').value.trim();
+          const telefonoCont=document.getElementById('telefonoContacto').value.trim();
+
+          if (!razonSocial||!patenteTractor ||!patenteSemi || !dniChofer || !nombreChofer||!contactoEmp||!telefonoCont) {
+            alert("⚠️ Complete todos los datos del chofer.");
+            return;    
+          }  
+          litros =  parsearNumeroFormateado(document.getElementById('litrosTotales').value || '');
+          const capacidadTotalUsuario = parsearNumeroFormateado(document.getElementById('capacidadTotSemi').value || '');
+         
+          if (capacidadTotalUsuario < litros ) {
+                alert(`⚠️ La capacidad el semi (${formatearNumero(capacidadTotalUsuario)}) es menor a los litros pedidos (${formatearNumero(litros)}).`);
+                return;
+          }
+
+
+          data.tipoCisterna = document.getElementById('tipoCisterna').value || '';
+          if (data.tipoCisterna === 'CISTERNADO') {
+              const compartimentos = [];
+              const filas = document.querySelectorAll('#tablaCisternado tbody tr');
+
+              let sumaCapacidades = 0;
+
+              filas.forEach(tr => {
+                const capacidad = parsearNumeroFormateado(tr.children[0].querySelector('input')?.value || '');
+                if (capacidad > 0) {
+                  compartimentos.push({ capacidad });
+                  sumaCapacidades += capacidad;
+                }
+              });
+
+              if (compartimentos.length === 0) {
+                alert("⚠️ Debe ingresar al menos un compartimento.");
+                return;
+              }
+              const capacidadTotalUsuario = parsearNumeroFormateado(document.getElementById('capacidadTotSemi').value || ''); 
+              if (sumaCapacidades !== capacidadTotalUsuario) {
+                alert(`⚠️ La suma de las capacidades (${formatearNumero(sumaCapacidades)}) no coincide con la capacidad total ingresada (${formatearNumero(capacidadTotalUsuario)}).`);
+                return;
+              }
+
+              data.capacidadTotSemi = capacidadTotalUsuario;
+              data.compartimentos = compartimentos;
+          } else {
+            data.compartimentos = [];
+          }
+
+          data.lugarEntrega = {
+              direccion: '',
+              localidad: '',
+              provincia: '',
+              horario: '' 
+          };
+          data.datosChofer = {
+            razonSocial: razonSocial,
+            patenteSemi: patenteSemi,
+            patenteTractor: patenteTractor,
+            dni: dniChofer,
+            nombre: nombreChofer,
+            contacto: contactoEmp,
+            telefono: telefonoCont,
+          };
+
+      } else {    //Si no retira en planta
+          const formaFlete = document.getElementById('formaFlete').value;
+         // const producto = document.getElementById('productoSelect').value.toUpperCase();
+          const flete = parsearNumeroFormateado(document.getElementById('precioFlete').value || '');
+          const areaValue = area.textContent;
+          let totNoAeroNafta=totalNoAeroNafta();
+
+          if ((data.flete === 0 || document.getElementById('precioFlete').value.trim() === '') && totNoAeroNafta!==0 && areaValue!=='RETAIL') {
+            alert("⚠️ Si no retira en planta, el flete no puede ser cero.");
+            return;
+          }
+          if (!formaFlete && totNoAeroNafta!==0 && areaValue!=='RETAIL') {
+              alert("⚠️ Debe seleccionar una forma de cálculo del flete.");
+              return;
+          }
+          data.formaFlete = formaFlete;
+          // Chofer en blanco
+          data.datosChofer = {
+              razonSocial: '',
+              patenteSemi: '',
+              patenteTractor: '',
+              dni: '',
+              nombre: '',
+              contacto:'',
+              telefono:''
+            };  
+          document.getElementById('tablaCisternadoBox').style.display = 'none';
+          document.getElementById('tipoCisterna').value = '';
+          document.querySelector('#tablaCisternado tbody').innerHTML = '';    
+          if (usandoNuevoLugar) {
+            const nuevaDireccion = document.getElementById('nuevaDireccion').value.trim();
+            const nuevaLocalidad = document.getElementById('nuevaLocalidad').value.trim();
+            const nuevaProvincia = document.getElementById('nuevaProvincia').value.trim();
+            const nuevoHorario = document.getElementById('nuevoHorario').value.trim();
+
+            if (!nuevaDireccion || !nuevaLocalidad || !nuevaProvincia || !nuevoHorario) {
+              alert("⚠️ Todos los campos del nuevo lugar de entrega son obligatorios.");
+              return;
+            }
+
+            data.lugarEntrega = {
+              direccion: nuevaDireccion,
+              localidad: nuevaLocalidad,
+              provincia: nuevaProvincia,
+              horario: nuevoHorario,
+            };
+          } else if (usandoLugarOrig) {
+              if (!lugarSeleccionado) {
+                  alert("⚠️ Debe seleccionar un lugar de entrega.");
+                  return;
+              }  
+              const info = window.lugaresEntrega[lugarSeleccionado];
+              data.lugarEntrega = {
+                  direccion: info.direccion,
+                  localidad: info.localidad,
+                  provincia: info.provincia,
+                  horario: info.horario,                 
+              }
+          }
+      }
+      if (document.getElementById('nuevoClienteBox').style.display === 'flex') {
+        const clienteNuevo = document.getElementById('nuevoCliente').value.trim();
+        const cuitNuevo = document.getElementById('nuevoCUIT').value.trim();
+
+        if (!clienteNuevo || !cuitNuevo) {
+          alert("⚠️ Cliente y CUIT son obligatorios.");
+          return;
+        }
+
+        if (!/^\d{11}$/.test(cuitNuevo)) {
+            alert("⚠️ El CUIT debe tener 11 dígitos.");
+            return;
+        }
+
+        data.cliente = clienteNuevo;
+        data.cuitCliente = cuitNuevo;
+      } else {
+        const cliente = document.getElementById('clientSelect').value;
+        const cuit = document.getElementById('cuitCliente').value.trim();
+
+        if (!cliente || !cuit) {
+          alert("⚠️ Cliente y CUIT son obligatorios.");
+          return;
+        }
+        if (!/^\d{11}$/.test(cuit)) {
+          alert("⚠️ El CUIT debe tener 11 dígitos.");
+          return;
+        }
+        data.cliente = cliente;
+        data.cuitCliente = cuit;
+      }
+      
+      data.formasPago = [];
+      let totalFormaPagAero=0;
+      document.querySelectorAll('#tablaFormasPago tbody tr').forEach(tr => {
+          const forma = tr.querySelector('select')?.value;
+          const importe = parsearNumeroFormateado(tr.querySelector('input')?.value);
+          if (forma==='En la Descarga TRF'|| forma=== 'En la Descarga Efectivo'){
+            totalFormaPagAero+= importe;
+          }
+          if (forma && importe > 0) {
+            data.formasPago.push({ forma, importe });
+          }
+      });
+
+      data.productos = [];
+      let totalPesosAero=0;
+      document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
+        const producto = tr.children[0].querySelector('select')?.value || '';
+        const litros = parsearNumeroFormateado(tr.children[1].querySelector('input')?.value || '0');
+        const precio = parsearNumeroFormateado(tr.children[2].querySelector('input')?.value || '0');
+        const subTotal  = parsearNumeroFormateado(tr.children[3].querySelector('input')?.value || '0');
+        if (producto && litros > 0 && precio >= 0) {
+          data.productos.push({ producto, litros, precio, subTotal });
+
+          if (producto.toUpperCase().includes('AERONAFTA')){
+             totalPesosAero+=subTotal ;
+             alert(totalPesosAero);
+          }
+        }
+      });
+      if (totalPesosAero!==totalFormaPagAero){
+        alert("⚠️ El importe total de Aeronafta debe pagarse con 'En la Descarga TRF' o 'En la Descarga Efectivo' .");
+        return;
+      }
+
+      data.flete = parsearNumeroFormateado(document.getElementById('precioFlete').value);
+      data.total = parsearNumeroFormateado(document.getElementById('totalCalculado').value);
+
+      data.formasPago = obtenerFormasPago();
+
+      data.importeAbonado =parsearNumeroFormateado(document.getElementById('importeAbonado').value);
+      data.diferencia = parsearNumeroFormateado(document.getElementById('importePendiente').value) * -1;
+
+      data.observaciones = document.getElementById('observaciones').value.trim();
+
+      data.imagen = window.imagenBase64 || '';
+
+      if (data.total < data.importeAbonado) {
+        alert("⚠️ El importe abonado no puede superar el total.");
+        return;
+      }
+
+
+      data.imagenes = window.imagenesSeleccionadas || [];
+
+      enviarFormulario(data, form);
+
+   } catch (err) {
+      console.error("❌ Error en envío:", err);
+      alert("❌ Ocurrió un error inesperado: " + err.message);
+      document.getElementById('btnSubmit').textContent = "Enviar";
+      document.getElementById('btnSubmit').disabled = false;
+   }
+  });
+
+    function enviarFormulario(data, form) {
+      document.getElementById('btnSubmit').textContent = "Enviando...";
+      document.getElementById('btnSubmit').disabled = true;
+      google.script.run
+        .withSuccessHandler(() => {
+          alert("✅ Formulario enviado correctamente.");
+          form.reset();
+          document.getElementById('obsCounter').textContent = '0 / 300';
+
+          // Restaurar vistas
+          document.getElementById('clienteActualBox').style.display = 'flex';
+          document.getElementById('nuevoClienteBox').style.display = 'none';
+
+          document.getElementById('entregaNuevaBox').style.display = 'none';
+          document.getElementById('entregaActualBox').style.display = 'block';
+
+          // Restaurar botones
+          document.getElementById('btnAddClient').innerHTML = '➕';
+
+          // Reset selects
+         // document.getElementById('productoSelect').selectedIndex = 0;
+          document.getElementById('placeSelect').selectedIndex = 0;
+          document.querySelector('#tablaFormasPago tbody').innerHTML = '';
+          document.getElementById('choferBox').style.display = 'none';
+          
+          limpiarFormulario();
+          document.getElementById('btnSubmit').textContent = "Enviar";
+          document.getElementById('btnSubmit').disabled = false;
+        })
+        .withFailureHandler(err => {
+          alert("❌ Error al enviar: " + err.message);
+          document.getElementById('btnSubmit').textContent = "Enviar";
+          document.getElementById('btnSubmit').disabled = false;
+        })
+        .procesarFormulario(data);    
+    };
+
+    function limpiarFormulario() {
+      document.getElementById('capacidadTotSemi').value = '';
+      document.getElementById('tipoCisterna').value = '';
+      document.getElementById('tablaCisternadoBox').style.display = 'none';
+      document.querySelector('#tablaCisternado tbody').innerHTML = '';
+
+      ['razonSocial', 'patenteTractor', 'patenteSemi', 'dniChofer', 'nombreChofer','Contacto','nuevoTelefono'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      ['nuevaDireccion', 'nuevaLocalidad', 'nuevaProvincia', 'nuevoHorario'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      document.getElementById('entregaNuevaBox').style.display = 'none';
+      document.getElementById('entregaActualBox').style.display = 'block';
+     // document.getElementById('placeSelect').selectedIndex = 0;
+
+
+      document.querySelector('#tablaProductos tbody').innerHTML = '';
+      document.getElementById('tablaProductos').style.display = 'none';
+      document.getElementById('litros').value = '';
+      document.getElementById('precio').value = '';
+      document.getElementById('subTotal').value = '';
+
+      document.querySelector('#tablaFormasPago tbody').innerHTML = '';
+      document.getElementById('importeAbonado').value = '';
+      document.getElementById('importePendiente').value = '';
+
+      window.imagenBase64 = '';
+      window.imagenesSeleccionadas = [];
+      const preview = document.getElementById('previewImagen');
+      if (preview) preview.innerHTML = '';
+    }
+
+    function activarBotonEnviar() {
+      document.getElementById('btnSubmit').textContent = "Enviar";
+      document.getElementById('btnSubmit').disabled = false;
+    }
+
+
+    document.getElementById('vendedorSelect').addEventListener('change', function () {
+      const vendedor = this.value;
+      const clientSelect = document.getElementById('clientSelect');
+      const btnAddClient = document.getElementById('btnAddClient');
+
+      if (vendedor && window.clientesPorVendedor[vendedor]) {
+       const clientes = Object.keys(window.clientesPorVendedor[vendedor]);
+       clientes.sort((a, b) => a.localeCompare(b));
+       llenarSelect(clientSelect, clientes, 'Seleccione un cliente');
+
+        clientSelect.disabled = false;
+        btnAddClient.disabled = false;
+      } else {
+        clientSelect.innerHTML = '<option value="" disabled selected>No hay clientes</option>';
+        clientSelect.disabled = true;
+        btnAddClient.disabled = true;
+      }
+
+      document.getElementById('cuitCliente').value = '';
+    });
+
+  document.getElementById('clientSelect').addEventListener('change', function () {
+      const vendedor = document.getElementById('vendedorSelect').value;
+      const cliente = this.value;
+      const cuitInput = document.getElementById('cuitCliente');
+      poblarLugaresEntrega(cliente);
+
+      if (vendedor && cliente && window.clientesPorVendedor[vendedor] && window.clientesPorVendedor[vendedor][cliente]) {
+        cuitInput.value = window.clientesPorVendedor[vendedor][cliente];
+      } else {
+        cuitInput.value = '';
+      }
+      // 🔁 Ocultar bloques que no correspondan al cambiar de cliente
+      document.getElementById('entregaNuevaBox').style.display = 'none';
+      document.getElementById('choferBox').style.display = 'none';
+      document.getElementById('entregaActualBox').style.display = 'block';
+
+      // 🔁 Limpiar campos de nuevo lugar
+      document.getElementById('nuevaDireccion').value = '';
+      document.getElementById('nuevaLocalidad').value = '';
+      document.getElementById('nuevaProvincia').value = '';
+      document.getElementById('nuevoHorario').value = '';
+
+      // 🔁 Limpiar datos del chofer
+      document.getElementById('razonSocial').value = '';
+      document.getElementById('patenteTractor').value = '';
+      document.getElementById('patenteSemi').value = '';
+      document.getElementById('dniChofer').value = '';
+      document.getElementById('nombreChofer').value = '';
+
+      document.getElementById('nombreChofer').value = '';
+      document.getElementById('nombreChofer').value = '';
+
+    });
+
+  document.getElementById('btnAddClient').addEventListener('click', function () {
+      document.getElementById('clienteActualBox').style.display = 'none';
+      document.getElementById('nuevoClienteBox').style.display = 'flex';
+      document.getElementById('nuevoCliente').value = '';
+      document.getElementById('nuevoCUIT').value = '';
+      toggleValidacionCampo('nuevoCUIT', true, '\\d{11}');
+      toggleValidacionCampo('cuitCliente', false);
+    }); 
+
+  document.getElementById('nuevoCliente').addEventListener('input', function () {
+    poblarLugaresEntrega(nuevoCliente);
+  });  
+
+
+  document.getElementById('btnCancelClient').addEventListener('click', function () {
+    document.getElementById('clienteActualBox').style.display = 'flex';
+    document.getElementById('nuevoClienteBox').style.display = 'none';
+    toggleValidacionCampo('nuevoCUIT', false);
+    toggleValidacionCampo('cuitCliente', true, '\\d{11}');
+  });
+
+  document.getElementById('cuitCliente').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '');
+  });
+  document.getElementById('nuevoCUIT').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '');
+  });
+  document.getElementById('dniChofer').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '');
+
+  });
+
+  function toggleValidacionCampo(idCampo, habilitar, pattern = '') {
+      const campo = document.getElementById(idCampo);
+      if (campo) {
+        if (habilitar) {
+          if (pattern) campo.setAttribute('pattern', pattern);
+          campo.setAttribute('required', 'required');
+        } else {
+          campo.removeAttribute('required');
+          campo.removeAttribute('pattern');
+        }
+      }
+}
+
+  function poblarVendedores(listaVendedores) {
+      const select = document.getElementById('vendedorSelect');
+      llenarSelect(select, listaVendedores, 'Seleccione un vendedor');
+   //   select.disabled = false; // mover esta línea al final
+    }
+
+
+    function llenarSelect(selectElement, opciones, placeholder) {
+      selectElement.innerHTML = '';
+      const opcionInicial = document.createElement('option');
+      opcionInicial.value = '';
+      opcionInicial.disabled = true;
+      opcionInicial.selected = true;
+      opcionInicial.textContent = placeholder;
+      selectElement.appendChild(opcionInicial);
+
+      opciones.forEach(opt => {
+        if (opt) {
+          const option = document.createElement('option');
+          option.value = opt;
+          option.textContent = opt;
+          selectElement.appendChild(option);
+        }
+      });
+    }
+////
+  function agregarProducto() {
+    const tbody = document.querySelector('#tablaProductos tbody');
+    const tr = document.createElement('tr');
+    //document.getElementById('tablaProductos').style.width = '100%';
+
+    // Producto
+    const tdProducto = document.createElement('td');
+    const selectProducto = document.createElement('select');
+    selectProducto.style.width ='160px';
+    selectProducto.style.minWidth = '120px';    
+    selectProducto.style.fontSize = '11px';
+    selectProducto.required = true;
+
+    const productosOrdenados = Object.keys(window.preciosProductos).sort((a, b) => a.localeCompare(b));
+
+    llenarSelect(selectProducto, productosOrdenados, 'Seleccione');
+    tdProducto.appendChild(selectProducto);
+
+    // Litros
+    const tdLitros = document.createElement('td');
+    const inputLitros = document.createElement('input');
+    inputLitros.type = 'text';
+    inputLitros.classList.add('tabla-producto-input');
+    inputLitros.style.setProperty('width', '50px', 'important');
+    inputLitros.style.textAlign = 'right';
+    tdLitros.appendChild(inputLitros);
+
+    inputLitros.addEventListener('focus', function () {
+      this.value = parsearNumeroFormateado(this.value).toString();
+    });
+
+    inputLitros.addEventListener('blur', function () {
+      const val = parsearNumeroFormateado(this.value);
+      this.value = formatearNumero(val);
+      actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
+      actualizarTotalProductos();
+    });
+
+    // Precio
+    const tdPrecio = document.createElement('td');
+    const inputPrecio = document.createElement('input');
+    inputPrecio.type = 'text';
+    inputPrecio.value = '';     // inicia vacío
+    //inputPrecio.step = '1';  // no permite decimales
+    inputPrecio.classList.add('tabla-producto-input');
+    inputPrecio.style.setProperty('width', '50px', 'important');
+    inputPrecio.style.textAlign = 'right';
+    tdPrecio.appendChild(inputPrecio);
+
+    inputPrecio.addEventListener('focus', function () {
+      this.value = parsearNumeroFormateado(this.value).toString();
+    });
+
+    inputPrecio.addEventListener('blur', function () {
+      const val = parsearNumeroFormateado(this.value);
+      this.value = formatearNumero(val);
+      actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
+      actualizarTotalProductos();
+    });
+
+
+    // Subtotal (calculado)
+    const tdSubtotal = document.createElement('td');
+    const inputSubtotal = document.createElement('input');
+    inputSubtotal.type = 'text';
+    inputSubtotal.readOnly = true;
+    inputSubtotal.style.width = '80px';
+    inputSubtotal.style.textAlign = 'right';
+    inputSubtotal.style.fontSize = '11px';
+    inputSubtotal.step = '1';  // no permite decimales
+    inputSubtotal.style.display = 'flex'; 
+    inputSubtotal.style.backgroundColor = '#f0f0f0';
+    tdSubtotal.appendChild(inputSubtotal);
+
+    // Botón eliminar
+    const tdEliminar = document.createElement('td');
+    const btnEliminar = document.createElement('button');
+
+    btnEliminar.textContent = '❌';
+    btnEliminar.type = 'button';
+    btnEliminar.style.fontSize = '10px';      // letra más chica
+    btnEliminar.style.padding = '0.1px 0.1px';    // menos espacio alrededor
+    btnEliminar.style.lineHeight = '1';
+    btnEliminar.style.border = 'none';        // sin borde
+    btnEliminar.style.background = 'none';    // sin fondo
+    btnEliminar.style.cursor = 'pointer';     // mano al pasar
+    tdEliminar.style.width = '1px';           // achicar la celda al mínimo
+
+    btnEliminar.onclick = function () {
+      tr.remove();
+      actualizarTotalProductos();
+    };
+    tdEliminar.appendChild(btnEliminar);
+
+    // Eventos para actualizar subtotal
+    inputLitros.addEventListener('input', () => {
+      actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
+      actualizarTotalProductos();
+    });
+    inputPrecio.addEventListener('input', () => {
+      actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
+      actualizarTotalProductos();
+    });
+    selectProducto.addEventListener('change', () => {
+      const prod = selectProducto.value;
+      const precio = window.preciosProductos[prod] || 0;
+      inputPrecio.value = formatearNumero(precio);  // ✅ esto
+      actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
+      actualizarTotalProductos();
+    });
+
+    tr.appendChild(tdProducto);
+    tr.appendChild(tdLitros);
+    tr.appendChild(tdPrecio);
+    tr.appendChild(tdSubtotal);
+    tr.appendChild(tdEliminar);
+
+    tbody.appendChild(tr);
+  }
+
+  function obtenerLitrosTotales() {
+    let total = 0;
+    document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
+      const litros = parsearNumeroFormateado(tr.children[1].querySelector('input')?.value || '0');
+      total += litros;
+    });
+    return total;
+  }
+  
+  function actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal) {
+    const litros = parsearNumeroFormateado(inputLitros.value);
+    const precio = parsearNumeroFormateado(inputPrecio.value);
+    const subtotal = litros * precio;
+    inputSubtotal.value =formatearNumero(subtotal);
+  }
+
+  function actualizarTotalProductos() {
+    let total = 0;
+    let totalSinAeroNafta=0;
+    document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
+      const subtotal = parsearNumeroFormateado(tr.children[3].querySelector('input')?.value || '0');
+      const subtotalLitros = parsearNumeroFormateado(tr.children[1].querySelector('input')?.value || '0');
+      total += subtotal;
+      const producto = tr.children[0].querySelector('select')?.value || '';
+        // no incluya aeronafta
+      if (producto.toUpperCase().includes('AERONAFTA')) {  
+      } else { totalSinAeroNafta += subtotalLitros;
+      }
+    });
+
+    let flete = parsearNumeroFormateado(document.getElementById('precioFlete').value || '0');
+    const formaFlete = document.getElementById('formaFlete').value;
+    if (formaFlete === '$ x litros') {
+       // const litros = totalSinAeroNafta;
+        flete = totalSinAeroNafta * flete;
+    } else if (formaFlete === '$ total') {
+        //flete ya es el valor del input, no hace falta cambiarlo
+    } else {
+       flete = 0;
+     }
+   
+    const totalFinal = total + flete;
+    document.getElementById('totalCalculado').value = formatearNumero(totalFinal);
+    recalcularTotalAbonado();
+  }
+
+ function totalNoAeroNafta() {
+      let total = 0
+      document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
+          const producto = tr.children[0].querySelector('select')?.value || '';
+          if (producto.toUpperCase().includes('AERONAFTA')) {
+          } else {
+            const importNoAeronafta = parsearNumeroFormateado(tr.children[1].querySelector('input')?.value || '0');
+            total +=  importNoAeronafta;
+          } 
+       });
+       return total;      
+  }
+
+  function incluyeAeroNafta() {
+      hay='NO';
+      let totalAueroNafta = 0
+      document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
+          const producto = tr.children[0].querySelector('select')?.value || '';
+          if (producto.toUpperCase().includes('AERONAFTA')) {
+            hay= 'SI';
+            } 
+        });
+      if (hay==='SI'){
+        // ✅ Si es AERONAFTA, agregamos las dos formas adicionales
+       window.formasPago = [...window.formasPagoBase]; // ← usamos copia base limpia 
+       window.formasPago.push('En la Descarga TRF', 'En la Descarga Efectivo');
+        return ;
+      } else {    
+          window.formasPago = [...window.formasPagoBase]; // ← usamos copia base limpia
+           return ;
+      }       
+  }
+
+  function agregarFormaPago() {
+      const tbody = document.querySelector('#tablaFormasPago tbody');
+      const tr = document.createElement('tr');
+      tr.classList.add('fila-forma-pago'); 
+
+      // Forma de pago
+      const tdForma = document.createElement('td');
+      const select = document.createElement('select');
+    //  const hay_aeronafta 
+      select.style.fontSize = '14px';
+      tdForma.style.width = '50%'; 
+      select.required = true;
+      select.classList.add('select-forma-pago');
+
+      incluyeAeroNafta();
+
+      llenarSelect(select, window.formasPago, 'Seleccione forma');
+      select.style.width = '100%';
+      tdForma.appendChild(select);
+
+      // Importe
+      const tdImporte = document.createElement('td');
+      const input = document.createElement('input');
+      input.type = 'text'; 
+      input.required = true;
+      input.classList.add('input-importe-pago'); 
+      input.style.width = '100%';
+      input.style.textAlign = 'right';
+      input.style.fontSize = '14px';
+      
+       // 💡 Manejadores para formateo visual
+      input.addEventListener('focus', function () {
+        const limpio = parsearNumeroFormateado(this.value);
+        this.value = limpio > 0 ? limpio.toString().replace('.', ',') : '';
+      });
+
+      input.addEventListener('blur', function () {
+          const val = parsearNumeroFormateado(this.value);
+          this.value = formatearNumero(val);
+          recalcularTotalAbonado();
+        });
+      
+      tdImporte.appendChild(input);
+
+
+      // Botón eliminar
+      const tdBoton = document.createElement('td');
+      const btn = document.createElement('button');
+      btn.textContent = '❌';
+      btn.type = 'button';
+      btn.style.fontSize = '12px';
+      btn.style.padding = '0.5px 0.5px';    // menos espacio alrededor
+      btn.style.lineHeight = '1';
+      btn.style.border = 'none'; 
+      btn.style.cursor = 'pointer';
+      btn.style.background = 'none';    // sin fondo
+      btn.style.width = '1px';           // achicar la celda al mínimo
+      btn.title = 'Eliminar esta forma de pago';
+      btn.onclick = function () {
+        tr.remove();
+        recalcularTotalAbonado();
+      };
+      tdBoton.appendChild(btn);
+      tr.appendChild(tdForma);
+      tr.appendChild(tdImporte);
+      tr.appendChild(tdBoton);
+      tbody.appendChild(tr);
+    }
+
+  function obtenerFormasPago() {
+      const formas = [];
+      const filas = document.querySelectorAll('.fila-forma-pago');
+
+      filas.forEach(fila => {
+        const forma = fila.querySelector('.select-forma-pago')?.value || '';
+        const valorTexto = fila.querySelector('.input-importe-pago')?.value || '';
+        const importe = parsearNumeroFormateado(valorTexto);  // ✅ CORRECTO
+
+        if (forma && importe > 0) {
+          formas.push({ forma, importe });
+        }
+      });
+
+      return formas;
+  }
+  
+  document.getElementById('placeSelect').addEventListener('change', function () {
+    const lugar = this.value;
+
+    const entregaActualBox = document.getElementById('entregaActualBox');
+    const entregaNuevaBox = document.getElementById('entregaNuevaBox');
+    const choferBox = document.getElementById('choferBox');
+
+    if (lugar === '__retira_en_planta__') {
+      entregaActualBox.style.display = 'none';
+      entregaNuevaBox.style.display = 'none';
+      choferBox.style.display = 'block';
+      document.getElementById('tablaCisternadoBox').style.display = 'none';
+      document.getElementById('tipoCisterna').value = '';
+      document.querySelector('#tablaCisternado tbody').innerHTML = '';
+      toggleValidacionCampo('dniChofer', true, '\\d{8}');
+
+    } else {
+      toggleValidacionCampo('dniChofer', false);
+      if (lugar === '__nuevo_lugar_entrega__') {
+        entregaActualBox.style.display = 'none';
+        entregaNuevaBox.style.display = 'block';
+        choferBox.style.display = 'none';
+      } else {
+        entregaActualBox.style.display = 'block';
+        entregaNuevaBox.style.display = 'none';
+        choferBox.style.display = 'none';
+
+        const info = window.lugaresEntrega[lugar] || {};
+        document.getElementById('direccionEntrega').value = info.direccion || '';
+        document.getElementById('localidadEntrega').value = info.localidad || '';
+        document.getElementById('provinciaEntrega').value = info.provincia || '';
+        document.getElementById('horarioEntrega').value = info.horario || '';
+        document.getElementById('contactoEntrega').value = info.contacto || '';
+        document.getElementById('telefonoContacto').value = info.telefono || '';
+    } 
+  }});
+
+  document.getElementById('tipoCisterna').addEventListener('change', function () {
+    const tipo = this.value;
+    document.getElementById('tablaCisternadoBox').style.display = (tipo === 'CISTERNADO') ? 'block' : 'none';
+    if (tipo !== 'CISTERNADO') {
+      document.querySelector('#tablaCisternado tbody').innerHTML = '';
+    }
+  });
+
+  function agregarCompartimento() {
+    const tbody = document.querySelector('#tablaCisternado tbody');
+    const cantidadActual = tbody.querySelectorAll('tr').length;
+
+    if (cantidadActual >= 10) {
+      alert("⚠️ Solo se permiten hasta 10 compartimentos.");
+      return;
+    }
+
+    const tr = document.createElement('tr');
+
+    // Campo de capacidad
+    const tdCap = document.createElement('td');
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '1';
+    input.step = '0.01';
+    input.required = true;
+    input.placeholder = 'Litros';
+    input.style.width = '100%';
+    tdCap.appendChild(input);
+
+    // Botón eliminar
+    const tdBtn = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.textContent = '❌';
+    btn.type = 'button';
+    btn.style.color = 'red';
+    btn.onclick = () => tr.remove();
+    tdBtn.appendChild(btn);
+
+    tr.appendChild(tdCap);
+    tr.appendChild(tdBtn);
+    tbody.appendChild(tr);
+  }
+
+
+  function poblarLugaresEntrega(cliente) {
+    const select = document.getElementById('placeSelect');
+    select.innerHTML = '';
+
+    // Placeholder
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    placeholder.textContent = 'Seleccione lugar de entrega';
+    select.appendChild(placeholder);
+
+    // 1. Retira en Planta
+    const retiro = document.createElement('option');
+    retiro.value = '__retira_en_planta__';
+    retiro.textContent = 'Retira en Planta';
+    select.appendChild(retiro);
+
+    // 2. Ingresar nuevo lugar de entrega
+    const nuevo = document.createElement('option');
+    nuevo.value = '__nuevo_lugar_entrega__';
+    nuevo.textContent = 'Ingresar nuevo lugar de entrega';
+    select.appendChild(nuevo);
+
+    // 3. Direcciones del cliente (ordenadas alfabéticamente)
+    const lista = window.lugaresPorCliente?.[cliente] || {};
+    const direccionesOrdenadas = Object.keys(lista).sort((a, b) => a.localeCompare(b));
+
+    direccionesOrdenadas.forEach(direccion => {
+      const datos = lista[direccion];  // <- accedés a localidad, provincia, etc.
+
+      const option = document.createElement('option');
+      option.value = direccion;
+
+      if (datos?.localidad && datos?.provincia) {
+        option.textContent = `${direccion} - ${datos.localidad}, ${datos.provincia}`;
+      } else {
+        option.textContent = direccion;
+      }
+
+      select.appendChild(option);
+    });
+
+    // Mapear lugares
+    window.lugaresEntrega = {
+      ...lista,
+      __retira_en_planta__: {
+        direccion: '',
+        localidad: '',
+        provincia: '',
+        horario: ''
+      }
+    };
+
+    // Limpiar campos visibles
+    document.getElementById('direccionEntrega').value = '';
+    document.getElementById('localidadEntrega').value = '';
+    document.getElementById('provinciaEntrega').value = '';
+    document.getElementById('horarioEntrega').value = '';
+   
+    // Mostrar la sección
+    document.getElementById('entregaActualBox').style.display = 'block';
+   }
+
+    document.getElementById('formaFlete').addEventListener('change', actualizarTotalProductos);
+    
+    document.getElementById('precioFlete').addEventListener('change', actualizarTotalProductos);
+
+    function recalcularTotalAbonado() {
+     const total = parsearNumeroFormateado(document.getElementById('totalCalculado').value);
+      let abonado = 0;
+      const filas = document.querySelectorAll('.fila-forma-pago');
+      filas.forEach(fila => {
+        const input = fila.querySelector('.input-importe-pago');
+        const importe = parsearNumeroFormateado(input?.value);
+        abonado += importe;
+      });
+
+      const faltante = total - abonado;
+
+      const pendienteInput = document.getElementById('importePendiente');
+      const abonadoInput = document.getElementById('importeAbonado');
+
+      abonadoInput.value = formatearNumero(abonado);
+      abonadoInput.dataset.valor = abonado;
+
+      pendienteInput.value = formatearNumero(faltante);
+      pendienteInput.dataset.valor = faltante;
+
+      if (faltante < 0) {
+        pendienteInput.style.backgroundColor = '#fff5cc'; // amarillo claro
+        pendienteInput.style.color = 'orange';
+      } else if (faltante === 0) {
+        pendienteInput.style.backgroundColor = '#e0ffe0'; // verde claro
+        pendienteInput.style.color = 'green';
+      } else {
+        pendienteInput.style.backgroundColor = '#fff0f0'; // rojo claro
+        pendienteInput.style.color = 'red';
+      }
+    }
+
+  const obsTextarea = document.getElementById('observaciones');
+  if (obsTextarea) {
+      obsTextarea.addEventListener('input', function () {
+        document.getElementById('obsCounter').textContent = `${this.value.length} / 300`;
+      });
+    }
+
+  document.getElementById('fotoAdjunta').addEventListener('change', function (e) {
+    const archivos = e.target.files;
+    const imagenes = [];
+
+    const promises = Array.from(archivos).map(archivo => {
+      return new Promise((resolve, reject) => {
+        const lector = new FileReader();
+        lector.onload = function (evt) {
+          const base64 = evt.target.result.split(',')[1]; // solo el contenido
+          imagenes.push({
+            nombre: archivo.name,
+            base64: base64
+          });
+          resolve();
+        };
+        lector.onerror = reject;
+        lector.readAsDataURL(archivo);
+      });
+    });
+
+    Promise.all(promises).then(() => {
+      window.imagenesSeleccionadas = imagenes;  // ⬅️ guardamos para el envío
+    });
+  });
+
+    function formatearNumero(num) {
+      return num.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function parsearNumeroFormateado(valor) {
+      return parseFloat(valor.replace(/\./g, '').replace(',', '.')) || 0;
+    }
+
+    function aplicarFormateoCampoNumero(input) {
+      input.addEventListener('focus', function () {
+        this.value = parsearNumeroFormateado(this.value).toString();
+      });
+
+      input.addEventListener('blur', function () {
+        const val = parsearNumeroFormateado(this.value);
+        this.value = formatearNumero(val);
+      });
+    }
+
+
+  function inicializarFormulario(data, vendedorLogueado,areaUsuario, usuario) {
+        window.clientesPorVendedor = data.clientesPorVendedor;
+        window.lugaresPorCliente = data.lugaresPorCliente;
+        window.preciosProductos = data.preciosProductos;
+        window.formasPago = data.formasPago;
+        window.vendedores = data.vendedores;
+        window.formasPagoBase = [...data.formasPago]; // 💾 copia segura para resetear 
+
+        llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
+        llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
+
+       // Llenar y seleccionar vendedor
+      const vendedorSelect = document.getElementById('vendedorSelect');
+      llenarSelect(vendedorSelect, data.vendedores, 'Seleccione un vendedor');
+
+      vendedorSelect.value = vendedorLogueado;
+      vendedorSelect.disabled = true;
+
+      document.getElementById('area').textContent = areaUsuario;
+      document.getElementById('user').textContent = usuario;
+
+      if ([...vendedorSelect.options].some(opt => opt.value === vendedorLogueado)) {
+        vendedorSelect.dispatchEvent(new Event('change'));
+      } else {
+        alert("❌ El vendedor no se encuentra en la lista.");
+      }
+  }
+
+  document.getElementById('btnLogin').addEventListener('click', function () {
+    const usuario = document.getElementById('usuarioInput').value.trim().toUpperCase();
+    const clave = document.getElementById('claveInput').value.trim();
+
+    if (!usuario || !clave) {
+      alert("⚠️ Ingrese usuario y contraseña.");
+      return;
+    }
+    
+    google.script.run
+      .withSuccessHandler(res => {
+        if (res.success) {
+          document.getElementById('loginBox').style.display = 'none';
+          document.getElementById('VtasForm').style.display = 'block';
+          document.getElementById('loginLogoContainer').style.display = 'none';
+          formWrapper.style.display = 'block';
+          // 🚀 Cargar listas y pasar el vendedor logueado a inicializarFormulario
+          google.script.run
+            .withSuccessHandler(data => inicializarFormulario(data, res.vendedor,res.area, res.user))
+            .withFailureHandler(err => alert("❌ Error al cargar listas: " + err.message))
+            .obtenerListas();
+        } else {
+          alert("❌ Usuario o clave incorrectos.");
+        }
+      })
+      .validarUsuario(usuario, clave);
+  });
+
+  </script>
+  </div> 
+</body>
+</html>
+
