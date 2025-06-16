@@ -559,23 +559,7 @@
 
     <button type="submit" id="btnSubmit">Enviar</button>
   </form>
-  <script>
-  fetch("https://script.google.com/macros/s/TU_WEB_APP_ID/exec")
-    .then(res => res.json())
-    .then(data => {
-      // Ejemplo: llenar un <select> con vendedores
-      const selectVendedor = document.getElementById("vendedor");
-      data.vendedores.forEach(v => {
-        const option = document.createElement("option");
-        option.value = v;
-        option.textContent = v;
-        selectVendedor.appendChild(option);
-      });
-  
-      // Guardá los demás datos en variables globales si querés (clientesPorVendedor, etc.)
-    })
-    .catch(err => alert("❌ Error cargando datos: " + err));
-    
+  <script>   
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
      try{ 
@@ -1571,31 +1555,15 @@
 
 
   function inicializarFormulario(data, vendedorLogueado,areaUsuario, usuario) {
-     const URL_GET = "https://script.google.com/macros/s/XXX/exec";
-    
-      fetch(URL_GET)
-        .then(res => res.json())
-        .then(data => {
-          window.clientesPorVendedor = data.clientesPorVendedor;
-          window.lugaresPorCliente = data.lugaresPorCliente;
-          window.preciosProductos = data.preciosProductos;
-          window.formasPago = data.formasPago;
-          window.vendedores = data.vendedores;
-          window.formasPagoBase = [...data.formasPago];
+      window.clientesPorVendedor = data.clientesPorVendedor;
+      window.lugaresPorCliente = data.lugaresPorCliente;
+      window.preciosProductos = data.preciosProductos;
+      window.formasPago = data.formasPago;
+      window.vendedores = data.vendedores;
+      window.formasPagoBase = [...data.formasPago];
 
-
-
-
-    
-        window.clientesPorVendedor = data.clientesPorVendedor;
-        window.lugaresPorCliente = data.lugaresPorCliente;
-        window.preciosProductos = data.preciosProductos;
-        window.formasPago = data.formasPago;
-        window.vendedores = data.vendedores;
-        window.formasPagoBase = [...data.formasPago]; // 💾 copia segura para resetear 
-
-        llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
-        llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
+      llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
+      llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
 
        // Llenar y seleccionar vendedor
       const vendedorSelect = document.getElementById('vendedorSelect');
@@ -1623,7 +1591,7 @@
       return;
     }
     
-   fetch(`${URL_BASE}?accion=login&usuario=${usuario}&clave=${clave}`)
+    fetch(`${URL_BASE}?accion=login&usuario=${usuario}&clave=${clave}`)
         .then(res => res.json())
         .then(res => {
          if (res.success) {
