@@ -560,7 +560,22 @@
     <button type="submit" id="btnSubmit">Enviar</button>
   </form>
   <script>
-
+  fetch("https://script.google.com/macros/s/TU_WEB_APP_ID/exec")
+    .then(res => res.json())
+    .then(data => {
+      // Ejemplo: llenar un <select> con vendedores
+      const selectVendedor = document.getElementById("vendedor");
+      data.vendedores.forEach(v => {
+        const option = document.createElement("option");
+        option.value = v;
+        option.textContent = v;
+        selectVendedor.appendChild(option);
+      });
+  
+      // Guardá los demás datos en variables globales si querés (clientesPorVendedor, etc.)
+    })
+    .catch(err => alert("❌ Error cargando datos: " + err));
+    
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
      try{ 
