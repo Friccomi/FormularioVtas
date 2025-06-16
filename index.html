@@ -1571,6 +1571,22 @@
 
 
   function inicializarFormulario(data, vendedorLogueado,areaUsuario, usuario) {
+     const URL_GET = "https://script.google.com/macros/s/XXX/exec";
+    
+      fetch(URL_GET)
+        .then(res => res.json())
+        .then(data => {
+          window.clientesPorVendedor = data.clientesPorVendedor;
+          window.lugaresPorCliente = data.lugaresPorCliente;
+          window.preciosProductos = data.preciosProductos;
+          window.formasPago = data.formasPago;
+          window.vendedores = data.vendedores;
+          window.formasPagoBase = [...data.formasPago];
+
+
+
+
+    
         window.clientesPorVendedor = data.clientesPorVendedor;
         window.lugaresPorCliente = data.lugaresPorCliente;
         window.preciosProductos = data.preciosProductos;
@@ -1607,25 +1623,29 @@
       return;
     }
     
-    google.script.run
-      .withSuccessHandler(res => {
-        if (res.success) {
-          document.getElementById('loginBox').style.display = 'none';
-          document.getElementById('VtasForm').style.display = 'block';
-          document.getElementById('loginLogoContainer').style.display = 'none';
-          formWrapper.style.display = 'block';
-          // 🚀 Cargar listas y pasar el vendedor logueado a inicializarFormulario
-          google.script.run
-            .withSuccessHandler(data => inicializarFormulario(data, res.vendedor,res.area, res.user))
-            .withFailureHandler(err => alert("❌ Error al cargar listas: " + err.message))
-            .obtenerListas();
-        } else {
-          alert("❌ Usuario o clave incorrectos.");
-        }
-      })
-      .validarUsuario(usuario, clave);
-  });
-
+   fetch(`${URL_BASE}?accion=login&usuario=${usuario}&clave=${clave}`)
+        .then(res => res.json())
+        .then(res => {
+         if (res.success) {
+            const vendedor = res.vendedor;
+            const area = res.area;
+            const user = res.user;
+  
+            // Ocultar login, mostrar formulario
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('formWrapper').style.display = 'block';
+  
+            // Paso 2: cargar listas
+            fetch(URL_BASE)
+              .then(r => r.json())
+              .then(data => inicializarFormulario(data, vendedor, area, user))
+              .catch(err => alert("❌ Error al cargar listas: " + err.message));
+          } else {
+            alert("❌ Usuario o clave incorrectos.");
+          }
+        })
+        .catch(err => alert("❌ Error de conexión: " + err.message));
+    });
   </script>
   </div> 
 </body>
