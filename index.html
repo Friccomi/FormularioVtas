@@ -26,7 +26,6 @@
       background-attachment: fixed; /* Para que no se mueva al hacer scroll */      
     }
 
-
   #formWrapper {
     background: rgba(50, 50, 50, 0.5);
     width: 100%;
@@ -42,7 +41,9 @@
       width: 100%;
       max-width: 400px;
       margin: auto;
-  }
+      background: rgba(50, 50, 50, 0.3); /* gris translúcido */
+    }
+
   label {
       font-weight: bold;
       display: block;
@@ -520,13 +521,13 @@
         <table id="tablaCisternado" style="width: 100%; border-collapse: collapse; margin-top: 0.3em;">
           <thead>
             <tr style="background-color: #eee;">
-              <th style="text-align: center;">Capacidad (litros)</th>
+              <th style="text-align: center; color:black;">Capacidad (litros)</th>
               <th></th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
-        <button type="button" onclick="agregarCompartimento()">➕ Agregar compartimento</button>
+        <button type="button" onclick="agregarCompartimento()" class="boton-agregar">➕ Agregar compartimento</button>
       </div>
     </div>
     <div class="form-section" style="margin-top: 1em; max-width: 250px;">
@@ -545,9 +546,9 @@
 
     <button type="submit" id="btnSubmit">Enviar</button>
   </form>
-  <script>   
-
-    const URL_BASE = "https://script.google.com/macros/s/AKfycbyB-Oevj-s7JOGRc_frjw9m6J3IvR8t7lSb9kQhU2oknUqnHDKdxMdTzCslAnMk-uwTaA/exec";  
+  <script>
+  
+    const URL_BASE ='https://script.google.com/macros/s/AKfycbzdeQCpfbdyv4skNqKrhtf31wexJrAwHs-wQNQ6Uqp1wXTbbmu_JLNDmdFOSjBef5a3/exec'
 
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
@@ -579,9 +580,9 @@
       const usandoLugarOrig = entregaActualBox.style.display === 'block';
 
       const retiraEnPlanta = document.getElementById('placeSelect').value === '__retira_en_planta__';
-      const razonSocial = document.getElementById('razonSocial').value.trim();    
-      const patenteSemi = document.getElementById('patenteSemi').value.trim(); 
-      
+      let razonSocial = document.getElementById('razonSocial').value.trim();    
+      let patenteSemi = document.getElementById('patenteSemi').value.trim(); 
+
       if (retiraEnPlanta) {
           const fleteVal = document.getElementById('precioFlete').value.trim();
           const formaFleteVal = document.getElementById('formaFlete').value.trim();
@@ -595,6 +596,7 @@
               } 
           razonSocial = document.getElementById('razonSocial').value.trim();    
           patenteSemi = document.getElementById('patenteSemi').value.trim();
+
           patenteTractor = document.getElementById('patenteTractor').value.trim();
           dniChofer = document.getElementById('dniChofer').value.trim();
           nombreChofer = document.getElementById('nombreChofer').value.trim();
@@ -605,15 +607,6 @@
             alert("⚠️ Complete todos los datos del chofer.");
             return;    
           }  
-          litros =  parsearNumeroFormateado(document.getElementById('litrosTotales').value || '');
-          const capacidadTotalUsuario = parsearNumeroFormateado(document.getElementById('capacidadTotSemi').value || '');
-         
-          if (capacidadTotalUsuario < litros ) {
-                alert(`⚠️ La capacidad el semi (${formatearNumero(capacidadTotalUsuario)}) es menor a los litros pedidos (${formatearNumero(litros)}).`);
-                return;
-          }
-
-
           data.tipoCisterna = document.getElementById('tipoCisterna').value || '';
           if (data.tipoCisterna === 'CISTERNADO') {
               const compartimentos = [];
@@ -687,9 +680,7 @@
               contacto:'',
               telefono:''
             };  
-          document.getElementById('tablaCisternadoBox').style.display = 'none';
-          document.getElementById('tipoCisterna').value = '';
-          document.querySelector('#tablaCisternado tbody').innerHTML = '';    
+
           if (usandoNuevoLugar) {
             const nuevaDireccion = document.getElementById('nuevaDireccion').value.trim();
             const nuevaLocalidad = document.getElementById('nuevaLocalidad').value.trim();
@@ -778,7 +769,6 @@
 
           if (producto.toUpperCase().includes('AERONAFTA')){
              totalPesosAero+=subTotal ;
-             alert(totalPesosAero);
           }
         }
       });
@@ -804,21 +794,9 @@
         return;
       }
 
-
       data.imagenes = window.imagenesSeleccionadas || [];
-       
-      const data1 = {
-        vendedor: "PRUEBA",
-        cliente: "TEST CLIENTE",
-        productos: [
-          { producto: "GASOIL", litros: 1000, precio: 500, subTotal: 500000 }
-        ],
-        formasPago: [
-          { forma: "Transferencia", importe: 300000 },
-          { forma: "Efectivo", importe: 200000 }
-        ]
-};
-      enviarFormulario(data1, form);
+
+      enviarFormulario(data, form);
 
    } catch (err) {
       console.error("❌ Error en envío:", err);
@@ -841,105 +819,78 @@
       })
         .then(res => res.json())
         .then(res => {
-          if (res.success) {
+            if (res.success) {
             alert("✅ Formulario enviado correctamente.");
             form.reset();
+            const vendedorSelect = document.getElementById('vendedorSelect');
+            vendedorSelect.value = window.vendedorLogueado;
+            vendedorSelect.disabled = true;
+
+            document.getElementById('area').textContent = window.areaUsuario;
+            document.getElementById('user').textContent = window.usuarioLogueado;
+
             document.getElementById('obsCounter').textContent = '0 / 300';
 
+            // Restaurar vistas
             document.getElementById('clienteActualBox').style.display = 'flex';
             document.getElementById('nuevoClienteBox').style.display = 'none';
+
             document.getElementById('entregaNuevaBox').style.display = 'none';
             document.getElementById('entregaActualBox').style.display = 'block';
+
+            // Restaurar botones
             document.getElementById('btnAddClient').innerHTML = '➕';
+
+            // Reset selects
+            // document.getElementById('productoSelect').selectedIndex = 0;
             document.getElementById('placeSelect').selectedIndex = 0;
             document.querySelector('#tablaFormasPago tbody').innerHTML = '';
+            document.querySelector('#tablaCisternado tbody').innerHTML = '';
             document.getElementById('choferBox').style.display = 'none';
 
             limpiarFormulario();
-
-          } else {
+            document.getElementById('btnSubmit').textContent = "Enviar";
+            document.getElementById('btnSubmit').disabled = false;
+        }else{
             alert("❌ Error al enviar: " + (res.error || 'Error desconocido.'));
           }
-        })
-        .catch(err => {
-          alert("❌ Error de red: " + err.message);
-        })
+    })
         .finally(() => {
           document.getElementById('btnSubmit').textContent = "Enviar";
           document.getElementById('btnSubmit').disabled = false;
         });
-
-
-
-     /* google.script.run
-        .withSuccessHandler(() => {
-          alert("✅ Formulario enviado correctamente.");
-          form.reset();
-          document.getElementById('obsCounter').textContent = '0 / 300';
-
-          // Restaurar vistas
-          document.getElementById('clienteActualBox').style.display = 'flex';
-          document.getElementById('nuevoClienteBox').style.display = 'none';
-
-          document.getElementById('entregaNuevaBox').style.display = 'none';
-          document.getElementById('entregaActualBox').style.display = 'block';
-
-          // Restaurar botones
-          document.getElementById('btnAddClient').innerHTML = '➕';
-
-          // Reset selects
-         // document.getElementById('productoSelect').selectedIndex = 0;
-          document.getElementById('placeSelect').selectedIndex = 0;
-          document.querySelector('#tablaFormasPago tbody').innerHTML = '';
-          document.getElementById('choferBox').style.display = 'none';
-          
-          limpiarFormulario();
-          document.getElementById('btnSubmit').textContent = "Enviar";
-          document.getElementById('btnSubmit').disabled = false;
-        })
-        .withFailureHandler(err => {
-          alert("❌ Error al enviar: " + err.message);
-          document.getElementById('btnSubmit').textContent = "Enviar";
-          document.getElementById('btnSubmit').disabled = false;
-        })
-        .procesarFormulario(data);     */
     };
-
     function limpiarFormulario() {
-      document.getElementById('capacidadTotSemi').value = '';
-      document.getElementById('tipoCisterna').value = '';
-      document.getElementById('tablaCisternadoBox').style.display = 'none';
-      document.querySelector('#tablaCisternado tbody').innerHTML = '';
+        document.getElementById('clientSelect').selectedIndex = 0;
+        document.getElementById('placeSelect').selectedIndex = 0;
+        document.getElementById('formaFlete').selectedIndex = 0;
+        document.getElementById('capacidadTotSemi').value = '';
+        document.getElementById('tipoCisterna').value = '';
+        document.getElementById('tablaCisternadoBox').style.display = 'none';
+ 
+        ['razonSocial', 'patenteTractor', 'patenteSemi', 'dniChofer', 'nombreChofer', 'contactoEntrega', 'telefonoContacto'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
 
-      ['razonSocial', 'patenteTractor', 'patenteSemi', 'dniChofer', 'nombreChofer','Contacto','nuevoTelefono'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
+        ['nuevaDireccion', 'nuevaLocalidad', 'nuevaProvincia', 'nuevoHorario'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
 
-      ['nuevaDireccion', 'nuevaLocalidad', 'nuevaProvincia', 'nuevoHorario'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
+        document.getElementById('entregaNuevaBox').style.display = 'none';
+        document.getElementById('entregaActualBox').style.display = 'block';
 
-      document.getElementById('entregaNuevaBox').style.display = 'none';
-      document.getElementById('entregaActualBox').style.display = 'block';
-     // document.getElementById('placeSelect').selectedIndex = 0;
+        document.querySelector('#tablaProductos tbody').innerHTML = '';
 
+        document.querySelector('#tablaFormasPago tbody').innerHTML = '';
+        document.getElementById('importeAbonado').value = '';
+        document.getElementById('importePendiente').value = '';
 
-      document.querySelector('#tablaProductos tbody').innerHTML = '';
-      document.getElementById('tablaProductos').style.display = 'none';
-      document.getElementById('litros').value = '';
-      document.getElementById('precio').value = '';
-      document.getElementById('subTotal').value = '';
-
-      document.querySelector('#tablaFormasPago tbody').innerHTML = '';
-      document.getElementById('importeAbonado').value = '';
-      document.getElementById('importePendiente').value = '';
-
-      window.imagenBase64 = '';
-      window.imagenesSeleccionadas = [];
-      const preview = document.getElementById('previewImagen');
-      if (preview) preview.innerHTML = '';
+        window.imagenBase64 = '';
+        window.imagenesSeleccionadas = [];
+        const preview = document.getElementById('previewImagen');
+        if (preview) preview.innerHTML = '';
     }
 
     function activarBotonEnviar() {
@@ -1077,13 +1028,13 @@
   function agregarProducto() {
     const tbody = document.querySelector('#tablaProductos tbody');
     const tr = document.createElement('tr');
-    //document.getElementById('tablaProductos').style.width = '100%';
+    document.getElementById('tablaProductos').style.width = '100%';
 
     // Producto
     const tdProducto = document.createElement('td');
     const selectProducto = document.createElement('select');
-    selectProducto.style.width ='160px';
-    selectProducto.style.minWidth = '120px';    
+    selectProducto.style.width ='150px';
+    selectProducto.style.minWidth = '110px';    
     selectProducto.style.fontSize = '11px';
     selectProducto.required = true;
 
@@ -1099,6 +1050,7 @@
     inputLitros.classList.add('tabla-producto-input');
     inputLitros.style.setProperty('width', '50px', 'important');
     inputLitros.style.textAlign = 'right';
+    inputLitros.style.fontSize = '11px';
     tdLitros.appendChild(inputLitros);
 
     inputLitros.addEventListener('focus', function () {
@@ -1120,6 +1072,7 @@
     //inputPrecio.step = '1';  // no permite decimales
     inputPrecio.classList.add('tabla-producto-input');
     inputPrecio.style.setProperty('width', '50px', 'important');
+    inputPrecio.style.fontSize = '11px';
     inputPrecio.style.textAlign = 'right';
     tdPrecio.appendChild(inputPrecio);
 
@@ -1140,7 +1093,7 @@
     const inputSubtotal = document.createElement('input');
     inputSubtotal.type = 'text';
     inputSubtotal.readOnly = true;
-    inputSubtotal.style.width = '80px';
+    inputSubtotal.style.width = '100px';
     inputSubtotal.style.textAlign = 'right';
     inputSubtotal.style.fontSize = '11px';
     inputSubtotal.step = '1';  // no permite decimales
@@ -1154,7 +1107,7 @@
 
     btnEliminar.textContent = '❌';
     btnEliminar.type = 'button';
-    btnEliminar.style.fontSize = '10px';      // letra más chica
+    btnEliminar.style.fontSize = '8px';      // letra más chica
     btnEliminar.style.padding = '0.1px 0.1px';    // menos espacio alrededor
     btnEliminar.style.lineHeight = '1';
     btnEliminar.style.border = 'none';        // sin borde
@@ -1175,7 +1128,7 @@
     });
     inputPrecio.addEventListener('input', () => {
       actualizarSubtotal(inputLitros, inputPrecio, inputSubtotal);
-      actualizarTotalProductos();
+      actualizarTotalProductos();tablaProductoslim
     });
     selectProducto.addEventListener('change', () => {
       const prod = selectProducto.value;
@@ -1418,6 +1371,7 @@
     // Campo de capacidad
     const tdCap = document.createElement('td');
     const input = document.createElement('input');
+    input.name = 'capacidadCompartimento';
     input.type = 'number';
     input.min = '1';
     input.step = '0.01';
@@ -1432,14 +1386,22 @@
     btn.textContent = '❌';
     btn.type = 'button';
     btn.style.color = 'red';
+    btn.style.fontSize = '10px';      // letra más chica
+    btn.style.padding = '0.1px 0.1px';    // menos espacio alrededor
+    btn.style.lineHeight = '1';
+    btn.style.border = 'none';        // sin borde
+    btn.style.background = 'none';    // sin fondo
+    btn.style.cursor = 'pointer';     // mano al pasar
+    tdBtn.style.width = '1px';           // achicar la celda al mínimo
+
     btn.onclick = () => tr.remove();
     tdBtn.appendChild(btn);
 
     tr.appendChild(tdCap);
     tr.appendChild(tdBtn);
     tbody.appendChild(tr);
-  }
 
+  }
 
   function poblarLugaresEntrega(cliente) {
     const select = document.getElementById('placeSelect');
@@ -1595,15 +1557,15 @@
 
 
   function inicializarFormulario(data, vendedorLogueado,areaUsuario, usuario) {
-      window.clientesPorVendedor = data.clientesPorVendedor;
-      window.lugaresPorCliente = data.lugaresPorCliente;
-      window.preciosProductos = data.preciosProductos;
-      window.formasPago = data.formasPago;
-      window.vendedores = data.vendedores;
-      window.formasPagoBase = [...data.formasPago];
+        window.clientesPorVendedor = data.clientesPorVendedor;
+        window.lugaresPorCliente = data.lugaresPorCliente;
+        window.preciosProductos = data.preciosProductos;
+        window.formasPago = data.formasPago;
+        window.vendedores = data.vendedores;
+        window.formasPagoBase = [...data.formasPago]; // 💾 copia segura para resetear 
 
-      llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
-      llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
+        llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
+        llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
 
        // Llenar y seleccionar vendedor
       const vendedorSelect = document.getElementById('vendedorSelect');
@@ -1614,6 +1576,9 @@
 
       document.getElementById('area').textContent = areaUsuario;
       document.getElementById('user').textContent = usuario;
+      window.vendedorLogueado = vendedorLogueado;
+      window.areaUsuario=areaUsuario;
+      window.usuarioLogueado=usuario;
 
       if ([...vendedorSelect.options].some(opt => opt.value === vendedorLogueado)) {
         vendedorSelect.dispatchEvent(new Event('change'));
@@ -1622,7 +1587,6 @@
       }
   }
 
-   
   document.getElementById('btnLogin').addEventListener('click', function () {
     const usuario = document.getElementById('usuarioInput').value.trim().toUpperCase();
     const clave = document.getElementById('claveInput').value.trim();
@@ -1632,7 +1596,7 @@
       return;
     }
     
-    fetch(`${URL_BASE}?accion=login&usuario=${usuario}&clave=${clave}`)
+   fetch(`${URL_BASE}?accion=login&usuario=${usuario}&clave=${clave}`)
         .then(res => res.json())
         .then(res => {
          if (res.success) {
@@ -1655,8 +1619,9 @@
         })
         .catch(err => alert("❌ Error de conexión: " + err.message));
     });
+
+
   </script>
   </div> 
 </body>
 </html>
-
