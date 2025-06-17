@@ -810,7 +810,7 @@
       document.getElementById('btnSubmit').textContent = "Enviando...";
       document.getElementById('btnSubmit').disabled = true;
 
-      fetch(URL_BASE, {
+      fetch("https://proxy-formulariovtas.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
