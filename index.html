@@ -811,7 +811,7 @@ function enviarFormulario(data, form) {
   btn.textContent = "Enviando...";
   btn.disabled = true;
 
-  fetch("http://localhost:5000/proxy", {
+  fetch("https://proxy-formulariovtas.onrender.com", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
