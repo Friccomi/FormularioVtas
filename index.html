@@ -810,7 +810,7 @@ function enviarFormulario(data, form) {
   const btn = document.getElementById('btnSubmit');
   btn.textContent = "Enviando...";
   btn.disabled = true;
-  fetch("https://mi-proxy-wico.onrender.com/proxy", {
+  fetch("https://proxy-formulariovtas.onrender.com/proxy", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
