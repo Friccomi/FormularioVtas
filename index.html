@@ -764,20 +764,15 @@
       }
       
       data.formasPago = [];
-      let totalFormaPagAero=0;
       document.querySelectorAll('#tablaFormasPago tbody tr').forEach(tr => {
           const forma = tr.querySelector('select')?.value;
           const importe = parsearNumeroFormateado(tr.querySelector('input')?.value);
-          if (forma==='En la Descarga TRF'|| forma=== 'En la Descarga Efectivo'){
-            totalFormaPagAero+= importe;
-          }
           if (forma && importe > 0) {
             data.formasPago.push({ forma, importe });
           }
       });
 
       data.productos = [];
-      let totalPesosAero=0;
       document.querySelectorAll('#tablaProductos tbody tr').forEach(tr => {
         const producto = tr.children[0].querySelector('select')?.value || '';
         const litros = parsearNumeroFormateado(tr.children[1].querySelector('input')?.value || '0');
@@ -785,16 +780,9 @@
         const subTotal  = parsearNumeroFormateado(tr.children[3].querySelector('input')?.value || '0');
         if (producto && litros > 0 && precio >= 0) {
           data.productos.push({ producto, litros, precio, subTotal });
-
-          if (producto.toUpperCase().includes('AERONAFTA')){
-             totalPesosAero+=subTotal ;
           }
         }
       });
-      if (totalPesosAero!==totalFormaPagAero){
-        alert("⚠️ El importe total de Aeronafta debe pagarse con 'En la Descarga TRF' o 'En la Descarga Efectivo' .");
-        return;
-      }
 
       data.flete = parsearNumeroFormateado(document.getElementById('precioFlete').value);
       data.total = parsearNumeroFormateado(document.getElementById('totalCalculado').value);
@@ -1593,8 +1581,8 @@
         llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
         llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
 
-        const telemarketerSelect = document.getElementById('telemarketerSelect');
-        llenarSelect(telemarketerSelect, data.telemarketerVta, 'Seleccione un Telemarketer');
+        const telemarketersOrdenados = [...data.telemarketerVta].sort((a, b) => a.localeCompare(b));
+        llenarSelect(telemarketerSelect, telemarketersOrdenados, 'Seleccione un Telemarketer');
         
        // Llenar y seleccionar vendedor
       const vendedorSelect = document.getElementById('vendedorSelect');
