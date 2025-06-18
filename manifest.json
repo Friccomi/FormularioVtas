@@ -7,7 +7,7 @@
   "theme_color": "#1e88e5",
   "icons": [
     {
-      "src": "/public/wico.png",
+      "src": "/wico.png",
       "sizes": "512x512",
       "type": "image/png"
     }
