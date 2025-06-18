@@ -271,13 +271,20 @@
       <button id="btnLogin" type="button">Ingresar</button>
   </div>
   <div id="formWrapper">
-  <form id="VtasForm" style="display: none;margin-bottom: 0em;">
-    <!-- Vendedor -->
-    <div class="form-section" >
-      <label for="vendedorSelect">Vendedor:</label>
-      <select id="vendedorSelect" name="vendedor" required>
-        <option value="" disabled selected>Seleccione un vendedor</option>
-      </select>
+      <div class="form-section" style="display: flex; align-items: center; gap: 0.5em;">
+      <div style="flex: 1;">
+        <label for="vendedorSelect">Vendedor:</label>
+        <select id="vendedorSelect" name="vendedor" required style="width: 100%;">
+          <option value="" disabled selected>Seleccione un vendedor</option>
+        </select>
+      </div>
+      <div style="flex: 1;">
+        <label for="telemarketerSelect">Telemarketer:</label>
+        <select id="telemarketerSelect" name="telemarketer"  style="width: 100%;">
+          <option value="" disabled selected>Seleccione un telemarketer</option>
+        </select>
+      </div>
+    </div>
       <p>
          <span id="area"  style="display: none" ></span>
          <span id="user"  style="display: none" ></span>
@@ -555,7 +562,7 @@
   </form>
   <script>
   
-    const URL_BASE ='https://script.google.com/macros/s/AKfycbxAYEoskZUGluDMxhfhCIqsTy_r-QQFarZGK7rB_2FH6YZWEG68vAIM_5jkVJIu7aGE/exec'
+    const URL_BASE ='https://script.google.com/macros/s/AKfycbzZUiYrSwLYogmt1Kdjj0SxEU02CS_S--USH5KxllbwQbYai1k6xW_tEE6hgu3_DVXp/exec'
 
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
@@ -568,6 +575,7 @@
       data.user=userValue;
 
       data.vendedor = document.getElementById('vendedorSelect').value;
+      data.telemarketer=document.getElementById('telemarketerSelect').value;
       const lugarSeleccionado = document.getElementById('placeSelect').value;
 
 
@@ -851,6 +859,7 @@
             document.getElementById('btnAddClient').innerHTML = '➕';
 
           //  Reset selects
+            document.getElementById('telemarketerSelect').selectedIndex = 0;
             document.getElementById('placeSelect').selectedIndex = 0;
             document.querySelector('#tablaFormasPago tbody').innerHTML = '';
             document.querySelector('#tablaCisternado tbody').innerHTML = '';
@@ -1575,10 +1584,14 @@
         window.formasPago = data.formasPago;
         window.vendedores = data.vendedores;
         window.formasPagoBase = [...data.formasPago]; // 💾 copia segura para resetear 
-
+        window.telemarketer = data.telemarketerVta;
+        
         llenarSelect(document.getElementById('nuevaProvincia'), data.provincias, 'Seleccione una provincia');
         llenarSelect(document.getElementById('formaFlete'), data.formasPagoFlete, 'Forma Flete');
 
+        const telemarketerSelect = document.getElementById('telemarketerSelect');
+        llenarSelect(telemarketerSelect, data.telemarketerVta, 'Seleccione un Telemarketer');
+        
        // Llenar y seleccionar vendedor
       const vendedorSelect = document.getElementById('vendedorSelect');
       llenarSelect(vendedorSelect, data.vendedores, 'Seleccione un vendedor');
@@ -1597,6 +1610,14 @@
       } else {
         alert("❌ El vendedor no se encuentra en la lista.");
       }
+      const teleSelect = document.getElementById('telemarketerSelect');
+      if (areaUsuario === 'RETAIL') {
+          teleSelect.disabled = false;
+      } else {
+          teleSelect.disabled = true;
+          teleSelect.value = ''; // limpia selección previa si hubiera
+      }
+
   }
 
   document.getElementById('btnLogin').addEventListener('click', function () {
