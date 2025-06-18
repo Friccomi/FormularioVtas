@@ -561,9 +561,8 @@
     <button type="submit" id="btnSubmit">Enviar</button>
   </form>
   <script>
-  
     const URL_BASE ='https://script.google.com/macros/s/AKfycbzZUiYrSwLYogmt1Kdjj0SxEU02CS_S--USH5KxllbwQbYai1k6xW_tEE6hgu3_DVXp/exec'
-
+    
     document.getElementById('VtasForm').addEventListener('submit', function (e) {
      e.preventDefault();
      try{ 
@@ -575,7 +574,8 @@
       data.user=userValue;
 
       data.vendedor = document.getElementById('vendedorSelect').value;
-      data.telemarketer=document.getElementById('telemarketerSelect').value;
+      const teleInput = document.getElementById('telemarketerSelect');
+      data.telemarketer = (teleInput && !teleInput.disabled) ? teleInput.value : '';
       const lugarSeleccionado = document.getElementById('placeSelect').value;
 
 
